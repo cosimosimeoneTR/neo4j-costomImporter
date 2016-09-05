@@ -75,6 +75,10 @@ fi
 cd $TAR_DEST_DIR/
 echoi Uncompressing $TAR_FILE in $TAR_DEST_DIR/
 tar -xvzf $TAR_DEST_DIR/$TAR_FILE --directory $TAR_DEST_DIR/ > /dev/null
+if [ $? -ne 0 ]; then
+   echoe Error in executing tar -xvzf $TAR_DEST_DIR/$TAR_FILE --directory $TAR_DEST_DIR/ ; exiting
+   exit 15
+fi
 
 nodeFilesCnt=`ls *_nodes.csv | wc -l`
 relFilesCnt=`ls *rels.csv | wc -l`
