@@ -17,7 +17,7 @@ if [ $# -eq 1 ]
 then
   cyptherFile=$1
 else
-  cyptherFile=`basename $0`.sh.py
+  cyptherFile=`basename $0`.cy
 fi
 
 echoi Executing script file $cyptherFile
