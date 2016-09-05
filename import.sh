@@ -56,28 +56,35 @@ if [[ $TAR_FILE == ''  ]]; then
   exit 10
 fi
 
-echoi Cleaning up $TAR_DEST_DIR/
-rm -f $TAR_DEST_DIR/*
-
-COPY_CMD="aws s3 cp s3://$BUCKET_NAME/$BUCKET_ROUTE/$LAST_S3DIR/$TAR_FILE  $TAR_DEST_DIR/ > /dev/null"
-echoi Copying tarball file to import directory
-echoi $COPY_CMD
-$COPY_CMD
-if [[ ! -e $TAR_DEST_DIR/$TAR_FILE ]]; then
-  echoe Unable to copy file $TAR_FILE
-  exit 10
+if [[ $DO_NOT_OVERWRITE_CSV_FILES -ne 1 ]]; then
+  echoi Cleaning up $TAR_DEST_DIR/
+  rm -f $TAR_DEST_DIR/*
 fi
 
+
+COPY_CMD="aws s3 cp s3://$BUCKET_NAME/$BUCKET_ROUTE/$LAST_S3DIR/$TAR_FILE  $TAR_DEST_DIR/ > /dev/null"
+if [[ $DO_NOT_OVERWRITE_CSV_FILES -ne 1 ]]; then
+  echoi Copying tarball file to import directory
+  echoi $COPY_CMD
+  $COPY_CMD
+
+  if [[ ! -e $TAR_DEST_DIR/$TAR_FILE ]]; then
+    echoe Unable to copy file $TAR_FILE
+    exit 10
+  fi
+fi
 
 
 #############################################################################################################
 ### Uncompress
 cd $TAR_DEST_DIR/
-echoi Uncompressing $TAR_FILE in $TAR_DEST_DIR/
-tar -xvzf $TAR_DEST_DIR/$TAR_FILE --directory $TAR_DEST_DIR/ > /dev/null
-if [ $? -ne 0 ]; then
-   echoe Error in executing tar -xvzf $TAR_DEST_DIR/$TAR_FILE --directory $TAR_DEST_DIR/ ; exiting
-   exit 15
+if [[ $DO_NOT_OVERWRITE_CSV_FILES -ne 1 ]]; then
+  echoi Uncompressing $TAR_FILE in $TAR_DEST_DIR/
+  tar -xvzf $TAR_DEST_DIR/$TAR_FILE --directory $TAR_DEST_DIR/ > /dev/null
+  if [ $? -ne 0 ]; then
+     echoe Error in executing tar -xvzf $TAR_DEST_DIR/$TAR_FILE --directory $TAR_DEST_DIR/ ; exiting
+     exit 15
+  fi
 fi
 
 nodeFilesCnt=`ls *_nodes.csv | wc -l`
