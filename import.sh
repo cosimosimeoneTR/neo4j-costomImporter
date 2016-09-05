@@ -1,9 +1,12 @@
 #!/bin/bash
-
 set +x
+renice -n -20 $$
+
+
 shopt -s expand_aliases
 alias echoi='echo `date +%Y-%m-%d\ %H:%M.%S` -INFO-'
 alias echoe='echo `date +%Y-%m-%d\ %H:%M.%S` -ERROR-'
+
 
 echoi STARTing
 SCRIPT_LOC=`pwd`
@@ -29,6 +32,12 @@ EC2_REGION=$3
 # This script configuration goes in <thisScriptName>.conf
 . ./`basename $0`.conf
 
+
+#############################################################################################################
+### Stopping neo4j server
+echoi Stopping neo4j server...
+(/etc/init.d/neo4j stop || /etc/init.d/neo4j-server stop || service neo4j stop) > /dev/null 2>&1
+sleep 1
 
 
 
