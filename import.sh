@@ -115,7 +115,7 @@ echoi Executing import
 echoi " "Source CSV files in $TAR_DEST_DIR
 echoi " "Datafiles in $DB_DIR/$TEMP_DB_NAME
 echoi " "Log file in $IMP_LOG_FILE
-echoi Node files count: $nodeFilesCnt, Relationship files count: $relFilesCnt
+echoi " "Node files count: $nodeFilesCnt, Relationship files count: $relFilesCnt
 eval $executeMe > $IMP_LOG_FILE
 
 if [ $? -ne 0 ]; then
