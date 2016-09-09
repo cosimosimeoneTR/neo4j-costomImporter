@@ -111,7 +111,8 @@ rm -rf $DB_DIR/$TEMP_DB_NAME 2> /dev/null
 mkdir -p $DB_DIR/$TEMP_DB_NAME 2> /dev/null
 chmod 777 $DB_DIR/$TEMP_DB_NAME 2> /dev/null
 
-echoi Executing import, log file in $IMP_LOG_FILE
+echoi Executing import
+echoi Datafiles in $DB_DIR/$TEMP_DB_NAME, log file in $IMP_LOG_FILE
 echoi Node files count: $nodeFilesCnt, Relationship files count: $relFilesCnt
 eval $executeMe > $IMP_LOG_FILE
 
