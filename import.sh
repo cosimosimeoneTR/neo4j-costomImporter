@@ -85,10 +85,15 @@ if [[ $DO_NOT_OVERWRITE_CSV_FILES -ne 1 ]]; then
      echoe Error in executing tar -xvzf $TAR_DEST_DIR/$TAR_FILE --directory $TAR_DEST_DIR/ ; exiting
      exit 15
   fi
+  TAR_FILE_CONTENT_SIZE=`tar tzvf $TAR_DEST_DIR/$TAR_FILE | awk '{s+=$3} END{print (s+0)}'`
+  if [ $TAR_FILE_CONTENT_SIZE -eq 0 ]; then
+     echoe "Error in $TAR_DEST_DIR/$TAR_FILE content: file is empty ; exiting"
+     exit 16
+  fi
 fi
 
 nodeFilesCnt=`ls *_nodes.csv | wc -l`
-relFilesCnt=`ls *rels.csv | wc -l`
+relFilesCnt=`ls *_rels.csv | wc -l`
 
 
 #############################################################################################################
